@@ -1,9 +1,11 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
+// next.config.js
+module.exports = {
   images: {
-    domains: ["v0.blob.com", "hebbkx1anhila5yf.public.blob.vercel-storage.com"],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.vercel-storage.com',
+      },
+    ],
   },
 }
-
-module.exports = nextConfig
