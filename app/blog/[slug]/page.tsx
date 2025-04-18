@@ -2,9 +2,12 @@
 import Link from "next/link"
 import Image from "next/image"
 import { notFound } from "next/navigation"
+import { Metadata } from 'next'
 
-interface BlogPostProps {
-  params: { slug: string }
+type PageProps = {
+  params: {
+    slug: string
+  }
 }
 
 // Simulated blog data source (replace with real fetch later)
@@ -40,7 +43,7 @@ export async function generateStaticParams() {
 }
 
 // Page component
-export default async function BlogPostPage({ params }: BlogPostProps) {
+export default async function BlogPostPage({ params }: PageProps) {
   const post = await getPostData(params.slug)
 
   if (!post) {
