@@ -1,14 +1,7 @@
 // app/blog/[slug]/page.tsx
-import Link from "next/link"
-import Image from "next/image"
-import { notFound } from "next/navigation"
-import { Metadata } from 'next'
-
-type PageProps = {
-  params: {
-    slug: string
-  }
-}
+import Link from "next/link";
+import Image from "next/image";
+import { notFound } from "next/navigation";
 
 // Simulated blog data source (replace with real fetch later)
 const mockPosts = [
@@ -27,27 +20,32 @@ const mockPosts = [
       </ul>
     `,
   },
-]
+];
 
 // Function to get blog data based on slug
 async function getPostData(slug: string) {
-  const post = mockPosts.find((post) => post.slug === slug)
-  return post || null
+  const post = mockPosts.find((post) => post.slug === slug);
+  return post || null;
 }
 
 // Required by App Router to statically generate dynamic paths
 export async function generateStaticParams() {
   return mockPosts.map((post) => ({
     slug: post.slug,
-  }))
+  }));
 }
 
-// Page component
-export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getPostData(params.slug)
+// Updated function to handle async params
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const post = await getPostData(slug);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -74,12 +72,11 @@ export default async function BlogPostPage({ params }: PageProps) {
           />
         </div>
 
-        {/* Inject blog content — safe if you're sanitizing it */}
         <div
           className="prose max-w-none"
           dangerouslySetInnerHTML={{ __html: post.content }}
         />
       </div>
     </div>
-  )
+  );
 }

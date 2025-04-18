@@ -1,51 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-
-type Article = {
-  id: string
-  title: string
-  category: string
-  date: string
-  imagePath: string // Path to the image in public folder
-  slug: string
-}
-
-// Use paths relative to the public folder
-const articles: Article[] = [
-  {
-    id: "1",
-    title: "Housing Market: That Changed the Most This Week",
-    category: "Apartment",
-    date: "March 13, 2024",
-    imagePath: "/images/receimage1.png", // Path starts from public folder
-    slug: "housing-market-changes",
-  },
-  {
-    id: "2",
-    title: "Read Unveils the Best Canadian Cities for Biking",
-    category: "Apartment",
-    date: "March 14, 2024",
-    imagePath: "/images/receimage2.png", // Path starts from public folder
-    slug: "best-canadian-cities-biking",
-  },
-  {
-    id: "3",
-    title: "10 Walkable Cities Where You Can Live Affordably",
-    category: "Office",
-    date: "March 15, 2024",
-    imagePath: "/images/receimage3.png", // Path starts from public folder
-    slug: "walkable-cities-affordable-living",
-  },
-  {
-    id: "4",
-    title: "New Apartment Now in the Best Canadian Cities",
-    category: "Sale",
-    date: "March 15, 2024",
-    imagePath: "/images/receimage4.png", // Path starts from public folder
-    slug: "new-apartments-canadian-cities",
-  },
-]
+import { posts } from "@/lib/posts"
 
 export default function RecentArticles() {
   return (
@@ -57,7 +13,7 @@ export default function RecentArticles() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {articles.map((article) => (
+          {posts.map((article) => (
             <div
               key={article.id}
               className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
@@ -65,7 +21,7 @@ export default function RecentArticles() {
               <Link href={`/blog/${article.slug}`} className="block">
                 <div className="relative h-48 w-full">
                   <Image
-                    src={article.imagePath || "/placeholder.svg"}
+                    src={article.imagePath}
                     alt={article.title}
                     width={400}
                     height={300}
