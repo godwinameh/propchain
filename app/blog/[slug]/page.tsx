@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
-// Simulated blog data source (replace with real fetch later)
 const mockPosts = [
   {
     slug: "sample-slug",
@@ -22,27 +21,25 @@ const mockPosts = [
   },
 ];
 
-// Function to get blog data based on slug
 async function getPostData(slug: string) {
   const post = mockPosts.find((post) => post.slug === slug);
   return post || null;
 }
 
-// Required by App Router to statically generate dynamic paths
+// ✅ Needed by Next.js for static site generation (SSG)
 export async function generateStaticParams() {
-  return mockPosts.map((post) => ({
-    slug: post.slug,
-  }));
+  return mockPosts.map((post) => ({ slug: post.slug }));
 }
 
-// Updated function to handle async params
-export default async function BlogPostPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const post = await getPostData(slug);
+// ✅ Page component
+interface BlogPostPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+  const post = await getPostData(params.slug);
 
   if (!post) {
     notFound();
